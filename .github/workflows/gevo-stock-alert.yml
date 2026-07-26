@@ -11,9 +11,9 @@
 # depending on the time of year. That's harmless here - the script only
 # logs or alerts on real price data, it doesn't assume the market is open.
 #
-# The weekend run is fixed at 16:00 UTC (8:00 AM PST/UTC-8). Since the
+# The weekend run is fixed at 16:05 UTC (8:05 AM PST/UTC-8). Since the
 # US switches to PDT (UTC-7) for part of the year, this run lands at
-# 9:00 AM Pacific during daylight saving instead of 8:00 AM. The market
+# 9:05 AM Pacific during daylight saving instead of 8:05 AM. The market
 # is closed either way, so this is just a status check - it will log
 # "no valid price data" or a near-zero change using Friday's close.
 name: GEVO Stock Alert
@@ -21,7 +21,7 @@ name: GEVO Stock Alert
 on:
   schedule:
     - cron: "0,30 13-21 * * 1-5"
-    - cron: "0 16 * * 6,0"
+    - cron: "5 16 * * 6,0"
   workflow_dispatch: {}
 
 permissions:
