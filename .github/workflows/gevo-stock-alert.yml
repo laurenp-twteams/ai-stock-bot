@@ -1,0 +1,40 @@
+# Runs stock_alert.py on a schedule during US market hours (Mon-Fri).
+#
+# GitHub Actions cron only understands UTC, and US market hours are
+# defined in Eastern Time (which shifts between EST/UTC-5 and EDT/UTC-4).
+# To avoid missing runs across the DST transition, the schedule below
+# covers 13:00-21:30 UTC, which is a superset of both:
+#   - EDT: 9:30 AM - 4:00 PM ET  ->  13:30 - 20:00 UTC
+#   - EST: 9:30 AM - 4:00 PM ET  ->  14:30 - 21:00 UTC
+# This means a couple of extra runs happen just before open / after close
+# depending on the time of year. That's harmless here - the script only
+# logs or alerts on real price data, it doesn't assume the market is open.
+name: GEVO Stock Alert
+
+on:
+  schedule:
+    - cron: "0,30 13-21 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check-price:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run stock alert check
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python stock_alert.py
