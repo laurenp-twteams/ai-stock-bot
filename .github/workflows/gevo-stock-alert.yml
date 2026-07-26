@@ -15,12 +15,20 @@
 # depending on daylight saving). The market is closed either way, so
 # this is just a status check - it will log "no valid price data" or
 # a near-zero change using Friday's close.
+#
+# The three entries below are one-off test triggers pinned to a specific
+# date (day-of-month 26, month 7 = July 26) rather than a day-of-week, so
+# they fire once this morning and never recur. Remove them once you've
+# confirmed automatic scheduling is working.
 name: GEVO Stock Alert
 
 on:
   schedule:
     - cron: "0,30 13-21 * * 1-5"
     - cron: "15 16 * * 6,0"
+    - cron: "0 17 26 7 *"
+    - cron: "45 17 26 7 *"
+    - cron: "30 18 26 7 *"
   workflow_dispatch: {}
 
 permissions:
