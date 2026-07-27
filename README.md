@@ -16,7 +16,7 @@ closing price.
   GEVO Alert: Down 12.0% today ($1.85 to $1.62)
   ```
 
-- Every run — whether or not the threshold is met — logs a timestamped
+- Every run, whether or not the threshold is met, logs a timestamped
   line to stdout, so results are visible in the GitHub Actions run
   history even when nothing happens.
 - If `yfinance` fails to return usable data, the script logs the error
